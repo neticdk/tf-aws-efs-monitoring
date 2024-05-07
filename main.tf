@@ -80,16 +80,12 @@ resource "aws_iam_role_policy_attachment" "this" {
   policy_arn = aws_iam_policy.this.arn
 }
 
-data "template_file" "this" {
-  template = "${file("${path.module}/templates/monitor_efs_filesystems.py.tpl")}"
-}
-
 data "archive_file" "this" {
   type        = "zip"
   output_path = "${path.module}/archives/monitor_efs_filesystems.zip"
 
   source {
-    content  = "${data.template_file.this.rendered}"
+    content  = file("${path.module}/templates/monitor_efs_filesystems.py.tpl")
     filename = "monitor_efs_filesystems.py"
   }
 }
